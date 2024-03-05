@@ -10,6 +10,10 @@ export function Tags() {
   const [tags, setTags] = useState<ITag[]>([]);
 
   const handleChange = async (value: string) => {
+    if (value.length < 3) {
+      setTags([]);
+      return;
+    }
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/tags?phrase=${value}`,
     );
