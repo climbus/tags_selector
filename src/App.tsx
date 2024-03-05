@@ -1,10 +1,13 @@
+import { Box } from "@mui/joy";
 import "./App.css";
 import { Tags } from "./Tags";
 
 function App() {
   return (
     <>
-      <Tags />
+      <Box alignItems={"top"}>
+        <Tags />
+      </Box>
     </>
   );
 }
