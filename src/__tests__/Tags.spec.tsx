@@ -14,6 +14,10 @@ afterAll(() => {
   server.close();
 });
 
+afterEach(() => {
+  server.events.removeAllListeners();
+});
+
 it("Renders the tags component with title and input", () => {
   const { getByText, getByRole } = render(<Tags />);
 
@@ -36,4 +40,17 @@ it.each([
       expect(getByText(tag)).toBeTruthy();
     }
   });
+});
+
+it("Shows no tags when phrase is shorter than 3 characters", async () => {
+  server.events.on("request:start", (req) => {
+    const phrase = new URL(req.request.url).searchParams.get("phrase");
+    expect(phrase).not.toBeNull();
+    expect(phrase?.length).toBeGreaterThanOrEqual(3);
+  });
+
+  const { queryByText, getByRole } = render(<Tags />);
+  const input = getByRole("textbox", { name: "phrase" });
+
+  fireEvent.change(input, { target: { value: "he" } });
 });
