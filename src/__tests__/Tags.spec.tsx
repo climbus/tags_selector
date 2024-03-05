@@ -1,7 +1,7 @@
 import { fireEvent, render, waitFor } from "@testing-library/react";
-import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 
+import handlers from "./handlers";
 import { Tags } from "../Tags";
 
 it("Renders the tags component with title and input", () => {
@@ -12,21 +12,7 @@ it("Renders the tags component with title and input", () => {
 });
 
 it("When typing on input it should ask api for tags", async () => {
-  const server = setupServer(
-    http.get("http://api.example.com/tags", ({ request }) => {
-      const url = new URL(request.url);
-      const phrase = url.searchParams.get("phrase");
-
-      if (phrase !== "test") {
-        return HttpResponse.json([]);
-      }
-
-      return HttpResponse.json([
-        { id: 1, name: "test1" },
-        { id: 2, name: "test2" },
-      ]);
-    }),
-  );
+  const server = setupServer(...handlers);
 
   server.listen();
 
