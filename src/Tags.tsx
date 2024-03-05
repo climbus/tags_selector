@@ -1,3 +1,9 @@
+import { Typography } from "@mui/joy";
+
 export function Tags() {
-  return <>Tagi</>;
+  return (
+    <>
+      <Typography level="h3">Tagi</Typography>
+    </>
+  );
 }
