@@ -4,6 +4,16 @@ import { setupServer } from "msw/node";
 import handlers from "./handlers";
 import { Tags } from "../Tags";
 
+const server = setupServer(...handlers);
+
+beforeAll(() => {
+  server.listen();
+});
+
+afterAll(() => {
+  server.close();
+});
+
 it("Renders the tags component with title and input", () => {
   const { getByText, getByRole } = render(<Tags />);
 
@@ -11,20 +21,19 @@ it("Renders the tags component with title and input", () => {
   expect(getByRole("textbox", { name: "phrase" })).toBeTruthy();
 });
 
-it("When typing on input it should ask api for tags", async () => {
-  const server = setupServer(...handlers);
-
-  server.listen();
-
+it.each([
+  ["test", ["test1", "test2"]],
+  ["hello", ["hello", "hello world"]],
+  ["hello world", ["hello world"]],
+])("When typing %s it should show %s", async (phrase, result) => {
   const { getByRole, getByText } = render(<Tags />);
   const input = getByRole("textbox", { name: "phrase" });
 
-  fireEvent.change(input, { target: { value: "test" } });
+  fireEvent.change(input, { target: { value: phrase } });
 
   await waitFor(() => {
-    expect(getByText("test1")).toBeTruthy();
-    expect(getByText("test2")).toBeTruthy();
+    for (const tag of result) {
+      expect(getByText(tag)).toBeTruthy();
+    }
   });
-
-  server.close();
 });
