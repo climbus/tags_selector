@@ -56,7 +56,7 @@ export function Tags({ initial }: { initial?: ITag[] }) {
           border: 1,
           borderColor: "divider",
           borderRadius: 2,
-          height: 50,
+          minHeight: 50,
           padding: 1,
         }}
       >
