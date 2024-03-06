@@ -76,3 +76,20 @@ it("Click on tag item should check tag and add to seleted list", async () => {
     ).toBeTruthy();
   });
 });
+
+it("Loads initial tags", async () => {
+  const { getByRole } = render(
+    <Tags
+      initial={[
+        { id: 1, name: "tag1" },
+        { id: 2, name: "tag2" },
+      ]}
+    />,
+  );
+  expect(
+    within(getByRole("list", { name: "selected tags" })).getByText(/tag1/),
+  ).toBeTruthy();
+  expect(
+    within(getByRole("list", { name: "selected tags" })).getByText(/tag2/),
+  ).toBeTruthy();
+});
