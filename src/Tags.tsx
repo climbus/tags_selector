@@ -37,6 +37,13 @@ export function Tags() {
   return (
     <Stack spacing={4}>
       <Typography level="h3">Tagi</Typography>
+      <List slotProps={{ root: { "aria-label": "selected tags" } }}>
+        {selectedTags.map((tag) => (
+          <ListItem key={tag.id}>
+            <Typography>{tag.name}</Typography>
+          </ListItem>
+        ))}
+      </List>
       <Input
         slotProps={{ input: { "aria-label": "phrase" } }}
         onChange={(e) => handleChange(e.target.value)}
