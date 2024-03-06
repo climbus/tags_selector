@@ -1,10 +1,4 @@
-import {
-  fireEvent,
-  queryByRole,
-  render,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { fireEvent, render, waitFor, within } from "@testing-library/react";
 import { setupServer } from "msw/node";
 
 import handlers from "./handlers";
@@ -55,7 +49,7 @@ it("Shows no tags when phrase is shorter than 3 characters", async () => {
     expect(phrase?.length).toBeGreaterThanOrEqual(3);
   });
 
-  const { queryByText, getByRole } = render(<Tags />);
+  const { getByRole } = render(<Tags />);
   const input = getByRole("textbox", { name: "phrase" });
 
   fireEvent.change(input, { target: { value: "he" } });
