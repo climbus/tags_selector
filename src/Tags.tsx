@@ -49,7 +49,9 @@ export function Tags() {
             onClick={() => handleClick(tag)}
           >
             <ListItemDecorator>
-              <Checkbox checked={selectedTags.includes(tag)} />
+              <Checkbox
+                checked={selectedTags.some((t) => t.name == tag.name)}
+              />
             </ListItemDecorator>
             <Typography>{tag.name}</Typography>
           </ListItem>
