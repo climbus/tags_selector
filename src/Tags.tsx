@@ -1,4 +1,12 @@
-import { Input, Stack, Typography } from "@mui/joy";
+import {
+  Checkbox,
+  Input,
+  List,
+  ListItem,
+  ListItemDecorator,
+  Stack,
+  Typography,
+} from "@mui/joy";
 import { useState } from "react";
 
 interface ITag {
@@ -8,6 +16,7 @@ interface ITag {
 
 export function Tags() {
   const [tags, setTags] = useState<ITag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
 
   const handleChange = async (value: string) => {
     if (value.length < 3) {
@@ -21,6 +30,10 @@ export function Tags() {
     setTags(data);
   };
 
+  const handleClick = (tag: ITag) => {
+    setSelectedTags([...selectedTags, tag]);
+  };
+
   return (
     <Stack spacing={4}>
       <Typography level="h3">Tagi</Typography>
@@ -28,9 +41,20 @@ export function Tags() {
         slotProps={{ input: { "aria-label": "phrase" } }}
         onChange={(e) => handleChange(e.target.value)}
       />
-      {tags.map((tag) => (
-        <Typography key={tag.id}>{tag.name}</Typography>
-      ))}
+      <List>
+        {tags.map((tag) => (
+          <ListItem
+            key={tag.id}
+            slotProps={{ root: { "aria-label": tag.name } }}
+            onClick={() => handleClick(tag)}
+          >
+            <ListItemDecorator>
+              <Checkbox checked={selectedTags.includes(tag)} />
+            </ListItemDecorator>
+            <Typography>{tag.name}</Typography>
+          </ListItem>
+        ))}
+      </List>
     </Stack>
   );
 }
