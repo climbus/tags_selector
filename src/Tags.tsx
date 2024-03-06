@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/joy";
 import { useState } from "react";
+import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 
 interface ITag {
   id: number;
@@ -35,15 +36,35 @@ export function Tags() {
   };
 
   return (
-    <Stack spacing={4}>
+    <Stack spacing={4} sx={{ width: 260 }}>
       <Typography level="h3">Tagi</Typography>
-      <List slotProps={{ root: { "aria-label": "selected tags" } }}>
+      <Stack
+        slotProps={{ root: { "aria-label": "selected tags", role: "list" } }}
+        component={List}
+        direction="row"
+        flexWrap="wrap"
+        useFlexGap
+        spacing={2}
+        sx={{
+          border: 1,
+          borderColor: "divider",
+          borderRadius: 2,
+          height: 50,
+          padding: 1,
+        }}
+      >
         {selectedTags.map((tag) => (
-          <ListItem key={tag.id}>
-            <Typography>{tag.name}</Typography>
-          </ListItem>
+          <Typography
+            key={tag.id}
+            variant="outlined"
+            level="body-md"
+            sx={{ borderRadius: 5 }}
+            endDecorator=<CancelPresentationIcon color="disabled" />
+          >
+            {tag.name}
+          </Typography>
         ))}
-      </List>
+      </Stack>
       <Input
         slotProps={{ input: { "aria-label": "phrase" } }}
         onChange={(e) => handleChange(e.target.value)}
