@@ -112,3 +112,30 @@ it("Click on remove button removes tag from list", async () => {
     expect(within(selected).queryByText(/tag1/)).toBeNull();
   });
 });
+
+it("Click selected checkbox removes tag from list", async () => {
+  const { getByRole, getByText } = render(
+    <Tags
+      initial={[
+        { id: 1, name: "test1" },
+        { id: 2, name: "test2" },
+      ]}
+    />,
+  );
+
+  const input = getByRole("textbox", { name: "phrase" });
+  fireEvent.change(input, { target: { value: "test" } });
+
+  await waitFor(() => {
+    expect(getByText("test1")).toBeTruthy();
+  });
+
+  const item = getByRole("listitem", { name: "test1" });
+  fireEvent.click(item);
+
+  const selected = getByRole("list", { name: "selected tags" });
+
+  await waitFor(() => {
+    expect(within(selected).queryByText(/test1/)).toBeNull();
+  });
+});
