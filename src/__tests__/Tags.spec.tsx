@@ -1,4 +1,10 @@
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import {
+  fireEvent,
+  queryByRole,
+  render,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import { setupServer } from "msw/node";
 
 import handlers from "./handlers";
@@ -53,4 +59,23 @@ it("Shows no tags when phrase is shorter than 3 characters", async () => {
   const input = getByRole("textbox", { name: "phrase" });
 
   fireEvent.change(input, { target: { value: "he" } });
+});
+
+it("Click on tag item should check tag and add to seleted list", async () => {
+  const { getByRole, getByText } = render(<Tags />);
+  const input = getByRole("textbox", { name: "phrase" });
+
+  fireEvent.change(input, { target: { value: "test" } });
+
+  await waitFor(() => {
+    expect(getByText("test1")).toBeTruthy();
+  });
+
+  const item = getByRole("listitem", { name: "test1" });
+  fireEvent.click(item);
+
+  await waitFor(() => {
+    const checkbox = within(item).getByRole("checkbox") as HTMLInputElement;
+    expect(checkbox.checked).toBeTruthy();
+  });
 });
