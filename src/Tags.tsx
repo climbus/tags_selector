@@ -1,5 +1,6 @@
 import {
   Checkbox,
+  IconButton,
   Input,
   List,
   ListItem,
@@ -65,7 +66,13 @@ export function Tags({ initial }: { initial?: ITag[] }) {
             variant="outlined"
             level="body-md"
             sx={{ borderRadius: 5 }}
-            endDecorator=<CancelPresentationIcon color="disabled" />
+            endDecorator=<IconButton
+              onClick={() =>
+                setSelectedTags(selectedTags.filter((t) => t.id !== tag.id))
+              }
+            >
+              <CancelPresentationIcon color="disabled" />
+            </IconButton>
           >
             {tag.name}
           </Typography>
