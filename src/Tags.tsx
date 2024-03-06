@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/joy";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 
 interface ITag {
@@ -15,9 +15,15 @@ interface ITag {
   name: string;
 }
 
-export function Tags() {
+export function Tags({ initial }: { initial?: ITag[] }) {
   const [tags, setTags] = useState<ITag[]>([]);
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
+
+  useEffect(() => {
+    if (initial) {
+      setSelectedTags(initial);
+    }
+  }, [initial]);
 
   const handleChange = async (value: string) => {
     if (value.length < 3) {
