@@ -71,5 +71,8 @@ it("Click on tag item should check tag and add to seleted list", async () => {
   await waitFor(() => {
     const checkbox = within(item).getByRole("checkbox") as HTMLInputElement;
     expect(checkbox.checked).toBeTruthy();
+    expect(
+      within(getByRole("list", { name: "selected tags" })).getByText(/test1/),
+    ).toBeTruthy();
   });
 });
