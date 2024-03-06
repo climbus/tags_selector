@@ -39,6 +39,10 @@ export function Tags({ initial }: { initial?: ITag[] }) {
   };
 
   const handleClick = (tag: ITag) => {
+    if (selectedTags.some((t) => t.name === tag.name)) {
+      setSelectedTags(selectedTags.filter((t) => t.name !== tag.name));
+      return;
+    }
     setSelectedTags([...selectedTags, tag]);
   };
 
