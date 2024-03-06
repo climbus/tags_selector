@@ -93,3 +93,22 @@ it("Loads initial tags", async () => {
     within(getByRole("list", { name: "selected tags" })).getByText(/tag2/),
   ).toBeTruthy();
 });
+
+it("Click on remove button removes tag from list", async () => {
+  const { getByRole } = render(
+    <Tags
+      initial={[
+        { id: 1, name: "tag1" },
+        { id: 2, name: "tag2" },
+      ]}
+    />,
+  );
+  const selected = getByRole("list", { name: "selected tags" });
+  fireEvent.click(
+    within(within(selected).getByText(/tag1/)).getByRole("button"),
+  );
+
+  await waitFor(() => {
+    expect(within(selected).queryByText(/tag1/)).toBeNull();
+  });
+});
