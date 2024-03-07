@@ -3,7 +3,12 @@ import { http, HttpResponse } from "msw";
 export default [
   http.get("http://api.example.com/tags", ({ request }) => {
     const url = new URL(request.url);
+
     const phrase = url.searchParams.get("phrase");
+    if (phrase === "500") {
+      return HttpResponse.error();
+    }
+
     const response_data = phrase
       ? data.filter((tag) =>
         tag.name.toLowerCase().includes(phrase.toLowerCase()),

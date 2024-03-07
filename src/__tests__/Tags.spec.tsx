@@ -139,3 +139,13 @@ it("Click selected checkbox removes tag from list", async () => {
     expect(within(selected).queryByText(/test1/)).toBeNull();
   });
 });
+
+it("Shows error message when request fails", async () => {
+  const { getByRole, getByText } = render(<Tags />);
+  const input = getByRole("textbox", { name: "phrase" });
+  fireEvent.change(input, { target: { value: "500" } });
+
+  await waitFor(() => {
+    expect(getByText(/error/i)).toBeTruthy();
+  });
+});
