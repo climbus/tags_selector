@@ -109,7 +109,15 @@ export function Tags({ initial }: { initial?: ITag[] }) {
           </ListItem>
         ))}
       </List>
-      <Snackbar open={loadingError}>Error ocurred. Try again later.</Snackbar>
+      <Snackbar
+        open={loadingError}
+        variant="solid"
+        color="warning"
+        autoHideDuration={1000}
+        onClose={() => setLoadingError(false)}
+      >
+        Error ocurred. Try again later.
+      </Snackbar>
     </Stack>
   );
 }
