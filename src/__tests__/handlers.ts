@@ -9,6 +9,13 @@ export default [
       return HttpResponse.error();
     }
 
+    if (phrase === "slow") {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(HttpResponse.json(data));
+        }, 1000);
+      });
+    }
     const response_data = phrase
       ? data.filter((tag) =>
         tag.name.toLowerCase().includes(phrase.toLowerCase()),
