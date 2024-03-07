@@ -5,6 +5,7 @@ import {
   List,
   ListItem,
   ListItemDecorator,
+  Snackbar,
   Stack,
   Typography,
 } from "@mui/joy";
@@ -19,6 +20,7 @@ interface ITag {
 export function Tags({ initial }: { initial?: ITag[] }) {
   const [tags, setTags] = useState<ITag[]>([]);
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
+  const [loadingError, setLoadingError] = useState(false);
 
   useEffect(() => {
     if (initial) {
@@ -31,11 +33,16 @@ export function Tags({ initial }: { initial?: ITag[] }) {
       setTags([]);
       return;
     }
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/tags?phrase=${value}`,
-    );
-    const data = await response.json();
-    setTags(data);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/tags?phrase=${value}`,
+      );
+      const data = await response.json();
+
+      setTags(data);
+    } catch (e) {
+      setLoadingError(true);
+    }
   };
 
   const handleClick = (tag: ITag) => {
@@ -102,6 +109,7 @@ export function Tags({ initial }: { initial?: ITag[] }) {
           </ListItem>
         ))}
       </List>
+      <Snackbar open={loadingError}>Error ocurred. Try again later.</Snackbar>
     </Stack>
   );
 }
